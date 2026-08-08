@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Sumon Assistente</title>
+</head>
+<body>
+
+    <h1>Sumon Assistente</h1>
+
+    <p>⚠️ Versão Pré-Alpha</p>
+
+    <p>
+        Esta versão pode apresentar erros,
+        instabilidades ou indisponibilidade.
+    </p>
+
+    <button id="acessar">Acessar Sumon Assistente</button>
+
+    <p id="status">Verificando servidor...</p>
+
+    <script>
+        async function verificarServidor() {
+            try {
+                const resposta = await fetch("status.json?t=" + Date.now());
+                const dados = await resposta.json();
+
+                if (!dados.url) {
+                    throw new Error("Servidor offline");
+                }
+
+                document.getElementById("status").textContent =
+                    "🟢 Servidor disponível";
+
+                document.getElementById("acessar").onclick = () => {
+                    window.location.href = dados.url;
+                };
+
+            } catch {
+                document.getElementById("status").textContent =
+                    "🔴 Servidor indisponível";
+
+                document.getElementById("acessar").onclick = () => {
+                    alert("O servidor do Sumon Assistente está desligado ou indisponível.");
+                };
+            }
+        }
+
+        verificarServidor();
+    </script>
+
+</body>
+</html>
